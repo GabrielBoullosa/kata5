@@ -11,6 +11,7 @@ public class Kata5 {
     public static void main(String[] args) {
         String URL_BD = new String("jdbc:sqlite:C:\\Users\\Usuario\\Documents\\NetBeansProjects\\kata5\\kata5.db");
         Connection connection = connect(URL_BD);
+        createNewTable();
     }
 
     private static Connection connect(String URL_BD) {
@@ -19,6 +20,7 @@ public class Kata5 {
             connection = DriverManager.getConnection(URL_BD);
             System.out.println("Se ha conectado a la base de datos con exito.");
             ShowTableData(connection);
+            
         }catch(SQLException ex){
             System.out.println("ERROR kata5 " + ex.getMessage());
         }
@@ -44,6 +46,20 @@ public class Kata5 {
                         resultset.getString("Apellidos") + " \t " +
                         resultset.getString("Departamento"));
             }
+        }catch(SQLException ex){
+            System.out.print("ERROR kata5 " + ex.getMessage());
+        }
+    }
+
+    private static void createNewTable() {
+        String url = "jdbc:sqlite:C:\\Users\\Usuario\\Documents\\NetBeansProjects\\kata5\\kata5.db";
+        String sql = "CREATE TABLE IF NOT EXISTS EMAIL (\n" +
+                "id integer PRIMARY KEY AUTOINCREMENT,\n" +
+                "direccion text NOT NULL);";
+        try (Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+            System.out.println("Se ha creado la tabla EMAIL.");
         }catch(SQLException ex){
             System.out.print("ERROR kata5 " + ex.getMessage());
         }
